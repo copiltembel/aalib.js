@@ -57,8 +57,7 @@ function colorRenderer(ctx, options) {
         let y;
         let color;
 
-        let i = data.length;
-        while (i--) {
+        for(var i = 0; i < data.length; ++i) {
             x = i % width;
             y = ~~(i / width);
             color = data[i];

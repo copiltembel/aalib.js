@@ -47,10 +47,9 @@ export default class AAImage {
         const length = data32.length;
         const data = new Array(length);
 
-        let i = length;
         let pixel32;
 
-        while (i--) {
+        for(var i = 0;i < length; ++i) {
             pixel32 = data32[i];
 
             data[i] = {

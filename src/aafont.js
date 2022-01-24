@@ -35,10 +35,9 @@ function calculateBrightness(char, options) {
     const data32 = new Uint32Array(idata.data.buffer);
 
     let brightness = 0;
-    let i = data32.length;
     let r, g, b, pixel32;
 
-    while (i--) {
+    for (var i = 0; i < data32.length; ++i) {
         pixel32 = data32[i];
 
         r = pixel32 & 0xff;

@@ -20,10 +20,9 @@ export default class BaseRenderer {
     }
 
     processImage(image) {
-        let i = image.data.length;
         let pixel;
 
-        while (i--) {
+        for(var i = 0; i < image.data.length; ++i) {
             pixel = image.data[i];
             pixel.char = this.matchChar(pixel.mono);
         }
