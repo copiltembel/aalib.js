@@ -1,6 +1,8 @@
 const webpack = require("webpack");
 const path = require("path");
 
+const TerserPlugin = require("terser-webpack-plugin");
+
 module.exports = {
 
     entry: "./src/index.js",
@@ -19,9 +21,13 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({ minimize: true }),
         new webpack.BannerPlugin(require("fs").readFileSync("LICENSE", { encoding: "utf8" }))
     ],
+
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+      },
 
     devtool: "source-map"
 };

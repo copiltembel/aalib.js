@@ -3,7 +3,7 @@ import AAImage from "../core/AAImage";
 
 export default class VideoReader extends AbstractReader {
 
-    _lastDisplayedTimestamp = 0
+    
 
     constructor(video, captureFrame, options) {
         super();
@@ -11,7 +11,7 @@ export default class VideoReader extends AbstractReader {
         this.video = video;
         this.options = Object.assign({}, { autoplay: false }, options);
         this.video.autoplay = this.options.autoplay;
-
+        this.options._lastDisplayedTimestamp = 0;
         this.captureFrame = captureFrame;
     }
 
@@ -23,7 +23,7 @@ export default class VideoReader extends AbstractReader {
                 return;
             }
 
-            if (this._lastDisplayedTimestamp + 1000/this.options.framerate <= timestamp) {
+            if (this.options._lastDisplayedTimestamp + 1000/this.options.framerate <= timestamp) {
                 observer.next(AAImage.fromImageData(this.captureFrame(video)));
             }
             requestAnimationFrame(this.playbackLoop);
