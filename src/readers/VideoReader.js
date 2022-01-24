@@ -2,6 +2,9 @@ import AbstractReader from "./AbstractReader";
 import AAImage from "../core/AAImage";
 
 export default class VideoReader extends AbstractReader {
+
+    _lastDisplayedTimestamp = 0
+
     constructor(video, captureFrame, options) {
         super();
 
@@ -15,13 +18,14 @@ export default class VideoReader extends AbstractReader {
     onRead(observer) {
         const video = this.video;
 
-        this.playbackLoop = () => {
+        this.playbackLoop = (timestamp) => {
             if (video.paused || video.ended) {
                 return;
             }
 
-            observer.next(AAImage.fromImageData(this.captureFrame(video)));
-
+            if (this._lastDisplayedTimestamp + 1000/this.options.framerate <= timestamp) {
+                observer.next(AAImage.fromImageData(this.captureFrame(video)));
+            }
             requestAnimationFrame(this.playbackLoop);
         };
 
@@ -42,6 +46,9 @@ export default class VideoReader extends AbstractReader {
     }
 
     static fromVideoElement(video, options) {
+        if (!options.framerate) {
+            options.framerate = 12
+        }
         const reader = new VideoReader(video, createVideoCapture(), options);
         return reader.read();
     }
