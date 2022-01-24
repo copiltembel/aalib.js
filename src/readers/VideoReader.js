@@ -11,8 +11,17 @@ export default class VideoReader extends AbstractReader {
         this.video = video;
         this.options = Object.assign({}, { autoplay: false }, options);
         this.video.autoplay = this.options.autoplay;
-        this.options._lastDisplayedTimestamp = 0;
         this.captureFrame = captureFrame;
+        
+        this.options._lastDisplayedTimestamp = 0;
+
+        if (!options.framerate) {
+            this.options.framerate = 12
+        } else {
+            this.options.framerate = options.framerate
+        }
+
+        console.log(`framerate is ${this.options.framerate}`)
     }
 
     onRead(observer) {
@@ -46,9 +55,6 @@ export default class VideoReader extends AbstractReader {
     }
 
     static fromVideoElement(video, options) {
-        if (!options.framerate) {
-            options.framerate = 12
-        }
         const reader = new VideoReader(video, createVideoCapture(), options);
         return reader.read();
     }
